@@ -1,0 +1,104 @@
+import pandas as pd
+import numpy as np
+import warnings
+warnings.filterwarnings('ignore')
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import metrics
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+
+corn_data = pd.read_csv ('vcf23_1.csv')
+
+categories = {"A": 1, "B": 2, "AB": 3, "A_TESTER": 4, "B_TESTER": 5}
+corn_data['Class']= corn_data['Class'].map(categories)
+
+
+X = corn_data.drop(['CMLsid','Class'], axis=1) 
+y = corn_data['Class']
+X = pd.DataFrame(X).fillna(0)
+y = pd.DataFrame(y).fillna(2.0)
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+"""
+попытка исправить ситуацию с зависимостью результата от random state с помощью stratify = y привела к тому, 
+что точность менялась только в зависимости от значений random_state
+
+"""
+clf = RandomForestClassifier(oob_score = True, random_state = 42)
+parameters = {'n_estimators': [30, 50, 70, 100, 110, 120], 'max_depth': [2, 5, 7],
+              'min_samples_leaf': [2, 3, 5], 'max_features': [8, 13, 20, 30, 40, 50, 75, 100]}
+grid_search_cv_clf = GridSearchCV (clf, parameters, cv = 5)
+grid_search_cv_clf.fit(X_train, y_train)
+grid_search_cv_clf.best_params_
+
+best_clf = grid_search_cv_clf.best_estimator_ 
+best_clf 
+best_clf.score(X_train, y_train) #проверка переобученности
+best_clf.score(X_test, y_test) 
+best_clf.oob_score
+y_pred = best_clf.predict(X_test)
+
+print(accuracy_score(y_test, y_pred))  
+print(confusion_matrix(y_test,y_pred))
+print(classification_report(y_test,y_pred))
+
+"""
+дальнейший код - иные методы поиска/проверки параметров
+и для GridSearch и для RandomizedSearch совершаются запуски при для отдельных значений параметров,
+поскольку не исключена возможность неправильного применения кросс-валидации
+"""
+
+rf_classifier = RandomForestClassifier(
+                      bootstrap=True,
+                      oob_score=True,
+                      random_state=42)
+                      
+max_features = [8, 13, 20, 30, 40, 50, 75, 100, 'log2']
+n_estimators = range(80, 150)
+max_depth = [3, 5, 7]
+min_samples_split = range(2, 5)
+min_samples_leaf = range(2, 4)
+   
+random_grid = {'n_estimators': n_estimators,
+               'max_depth': max_depth,
+               'min_samples_split': min_samples_split,
+               'min_samples_leaf': min_samples_leaf
+               'max_features': max_features}
+               
+rf_random = RandomizedSearchCV(
+                estimator = rf,
+                param_distributions = random_grid,
+                n_iter = 50, cv = 5,
+                verbose=1, random_state=seed)
+               
+rf_random.fit(X_train, y_train)
+rf_random.best_params_
+best_model = rf_random.best_estimator_
+best_model.score(X_train, y_train)
+best_model.score(X_test, y_test)
+best_model.oob_score
+y_pred = best_model.predict(X_test)
+
+print(accuracy_score(y_test, y_pred))  
+print(confusion_matrix(y_test,y_pred))
+print(classification_report(y_test,y_pred))
+
+"""
+из-за возможности неправильного применения кросс-валидации
+совершаются и дополнительные одиночные запуски для проверки отдельных наборов параметров, 
+отличающихся от лучших по gridsearch по 1-2 параметрам 
+
+"""
+clf_rf = RandomForestClassifier(max_features='sqrt', criterion='gini', n_estimators = 110, 
+                                min_samples_leaf = 2, max_depth = 5, oob_score = True, random_state = 42)
+clf_rf.fit(X_train, y_train)
+clf_rf.score(X_test, y_test)
+clf_rf.oob_score
+y_pred = clf.predict(X_test)
+
+print(accuracy_score(y_test, y_pred))  
+print(confusion_matrix(y_test,y_pred))
+print(classification_report(y_test,y_pred))

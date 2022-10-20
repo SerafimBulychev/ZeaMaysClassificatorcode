@@ -45,6 +45,31 @@ print(accuracy_score(y_test, y_pred))
 print(confusion_matrix(y_test,y_pred))
 print(classification_report(y_test,y_pred))
 
+'''
+Дополнение за 19.10 - черновой код для реализации классификатора random forest + snp:
+Причина: в рамках перебора вариантов с непосредственно RF проблема переобучаемости пока не преодолена
+Алгоритм: работа с RF - выявление фич - работа SVM с выбранными RF фичами
+
+Ближайшие изменения будут связаны с:
+Кросс-валидация: использование стратифицированной кросс-валидации; переход на out-of-bag verification
+RF-SVM: работа над более "экологичным" внедрением в код метода; 2 статьи, также описывающие метод - возможные добавления в алгоритм
+
+'''
+snp = corn_data.columns.values
+ranking = dict(itertools.islice(ranking.items(), n_features))
+top_snp = list(ranking.keys())
+top_snp = np.asarray(top_snp) #важно определиться, сколько фич надо оставить для SVM 
+X_train = X_train[top_snp].values
+X_test = X_test[top_snp].values
+
+clf = SVC(kernel='rbf', gamma=0.001, C=100, decision_function_shape='ovo')
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+
+print(accuracy_score(y_test, y_pred))  
+print(confusion_matrix(y_test,y_pred))
+print(classification_report(y_test,y_pred))
+
 """
 дальнейший код - иные методы поиска/проверки параметров
 и для GridSearch и для RandomizedSearch совершаются запуски при для отдельных значений параметров,

@@ -48,7 +48,7 @@ best_clf = grid_search_cv_clf.best_estimator_
 best_clf 
 best_clf.score(X_train, y_train) #проверка переобученности
 best_clf.score(X_test, y_test) 
-best_clf.oob_score
+best_clf.oob_score_
 y_pred = best_clf.predict(X_test)
 
 print(accuracy_score(y_test, y_pred))  

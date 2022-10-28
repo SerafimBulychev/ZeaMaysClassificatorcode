@@ -65,6 +65,7 @@ print(classification_report(y_test,y_pred))
 RF-SVM: работа над более "экологичным" внедрением в код метода; 2 статьи, также описывающие метод - возможные добавления в алгоритм
 
 '''
+n_features = 310
 snp = corn_data.columns.values
 snp_rank = dict(zip(snp, best_clf.feature_importances_))
 feature_rank = dict(itertools.islice(snp_rank.items(), n_features))

@@ -66,7 +66,7 @@ RF-SVM: работа над более "экологичным" внедрени
 
 '''
 snp = corn_data.columns.values
-snp_rank = dict(zip(snp, fs.feature_importances_))
+snp_rank = dict(zip(snp, best_clf.feature_importances_))
 feature_rank = dict(itertools.islice(snp_rank.items(), n_features))
 top_snp = list(feature_rank.keys())
 top_snp = np.asarray(top_snp) #важно определиться, сколько фич надо оставить для SVM 

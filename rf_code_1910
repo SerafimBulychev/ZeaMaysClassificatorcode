@@ -8,6 +8,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+from sklearn.svm import SVC
 
 corn_data = pd.read_csv ('vcf23_1.csv')
 

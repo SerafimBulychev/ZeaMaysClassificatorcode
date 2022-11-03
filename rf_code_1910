@@ -90,7 +90,6 @@ print(classification_report(y_test,y_pred))
 """
 
 rf_classifier = RandomForestClassifier(
-                      bootstrap=True,
                       oob_score=True,
                       random_state=42)
                       

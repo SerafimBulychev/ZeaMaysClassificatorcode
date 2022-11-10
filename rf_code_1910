@@ -39,7 +39,7 @@ grid_search_cv_clf.best_params_
 '''
 варианты введения oob_score
 '''
-oob_scorer = make_scorer(clf.oob_score)
+oob_scorer = make_scorer(clf.oob_score_)
 grid_search_cv_clf_oob = GridSearchCV (clf, parameters, scoring = oob_scorer) 
 
 

@@ -139,3 +139,51 @@ y_pred = clf.predict(X_test)
 print(accuracy_score(y_test, y_pred))  
 print(confusion_matrix(y_test,y_pred))
 print(classification_report(y_test,y_pred))
+
+
+
+
+# код для roc-кривой
+
+n_classes = len(np.unique(y_test))
+y_test = label_binarize(y_test, classes=np.arange(n_classes))
+y_pred = label_binarize(y_pred, classes=np.arange(n_classes))
+
+fpr = dict()
+tpr = dict()
+
+y_test=y_test.reshape((190,1))
+y_pred=y_pred.reshape((190,1))
+roc_auc = dict()
+for i in range(n_classes):
+    fpr[i], tpr[i], _ = roc_curve(y_train[:, i], y_pred[:, i])
+    roc_auc[i] = auc(fpr[i], tpr[i])
+
+fpr["macro"] = all_fpr
+tpr["macro"] = mean_tpr
+roc_auc["macro"] = auc(fpr["macro"], tpr["macro"])
+
+plt.figure(dpi=600, figsize=(10,5))
+lw = 2
+
+plt.plot(fpr["micro"], tpr["micro"],
+    label="micro-average ROC curve (area = {0:0.2f})".format(roc_auc["micro"]),
+    color="deeppink", linestyle=":", linewidth=4,)
+
+plt.plot(fpr["macro"], tpr["macro"],
+    label="macro-average ROC curve (area = {0:0.2f})".format(roc_auc["macro"]),
+    color="navy", linestyle=":", linewidth=4,)
+
+colors = cycle(["aqua", "darkorange", "darkgreen", "yellow", "blue"])
+for i, color in zip(range(n_classes), colors):
+    plt.plot(fpr[i], tpr[i], color=color, lw=lw,
+        label="ROC curve of class {0} (area = {1:0.2f})".format(i, roc_auc[i]),)
+
+plt.plot([0, 1], [0, 1], "k--", lw=lw)
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.title("Receiver Operating Characteristic (ROC) curve")
+plt.legend()
+

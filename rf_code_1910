@@ -71,7 +71,7 @@ snp = corn_data.columns.values
 snp_rank = dict(zip(snp, best_clf.feature_importances_))
 feature_rank = dict(itertools.islice(snp_rank.items(), n_features))
 top_snp = list(feature_rank.keys())
-top_snp = np.asarray(top_snp) #важно определиться, сколько фич надо оставить для SVM 
+top_snp = np.asarray(top_snp) 
 X_train = X_train[top_snp].values
 X_test = X_test[top_snp].values
 

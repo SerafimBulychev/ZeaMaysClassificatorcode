@@ -189,10 +189,10 @@ plt.legend()
 
 #visualize decision tree
 
-viz = dtreeviz(rf.estimators_[110], X, y,
+vizclf = dtreeviz(rf.estimators_[110], X, y,
                target_name="heterotic_group",
                feature_names=corn_data.feature_names,
                class_names=list(heterotic_group.names),
                title="100th decision tree -ZeaMaysClassifier")
 
-viz.save("decision_tree_wine.svg")
+vizclf.save("decision_tree_zea_mays_classifier.svg")

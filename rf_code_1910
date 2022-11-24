@@ -187,3 +187,12 @@ plt.ylabel("True Positive Rate")
 plt.title("Receiver Operating Characteristic (ROC) curve")
 plt.legend()
 
+#visualize decision tree
+
+viz = dtreeviz(rf.estimators_[110], X, y,
+               target_name="heterotic_group",
+               feature_names=corn_data.feature_names,
+               class_names=list(heterotic_group.names),
+               title="100th decision tree -ZeaMaysClassifier")
+
+viz.save("decision_tree_wine.svg")

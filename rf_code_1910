@@ -25,10 +25,9 @@ y = pd.DataFrame(y).fillna(2.0)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 """
-попытка исправить ситуацию с зависимостью результата от random state с помощью stratify = y привела к тому, 
-что точность менялась только в зависимости от значений random_state
-
+stratify = y - точность менялась только в зависимости от значений random_state
 """
+
 clf = RandomForestClassifier(oob_score = True, random_state = 42)
 parameters = {'n_estimators': [70, 100, 110, 120], 'max_depth': [2, 5, 7], 
               'min_samples_leaf': [2, 3, 5], 'max_features': [8, 13, 20, 30, 40, 50, 75, 100]}
@@ -63,7 +62,7 @@ print(classification_report(y_test,y_pred))
 
 Ближайшие изменения будут связаны с:
 Кросс-валидация: использование стратифицированной кросс-валидации; переход на out-of-bag verification
-RF-SVM: работа над более "экологичным" внедрением в код метода; 2 статьи, также описывающие метод - возможные добавления в алгоритм
+RF-SVM: работа над более "экологичным" внедрением в код метода
 
 '''
 n_features = 310
@@ -75,7 +74,7 @@ top_snp = np.asarray(top_snp)
 X_train = X_train[top_snp].values
 X_test = X_test[top_snp].values
 
-clf = SVC(kernel='rbf', gamma=0.001, C=100, decision_function_shape='ovo')
+clf = SVC(kernel='rbf', decision_function_shape='ovo')
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 
@@ -123,12 +122,7 @@ print(accuracy_score(y_test, y_pred))
 print(confusion_matrix(y_test,y_pred))
 print(classification_report(y_test,y_pred))
 
-"""
-из-за возможности неправильного применения кросс-валидации
-совершаются и дополнительные одиночные запуски для проверки отдельных наборов параметров, 
-отличающихся от лучших по gridsearch по 1-2 параметрам 
 
-"""
 clf_rf = RandomForestClassifier(max_features='sqrt', criterion='gini', n_estimators = 110, 
                                 min_samples_leaf = 2, max_depth = 5, oob_score = True, random_state = 42)
 clf_rf.fit(X_train, y_train)

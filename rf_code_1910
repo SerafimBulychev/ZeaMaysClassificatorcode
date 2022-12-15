@@ -9,6 +9,8 @@ from sklearn import metrics
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, make_scorer
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.svm import SVC
+#pip install dtreeviz
+from dtreeviz.trees import dtreeviz
 
 corn_data = pd.read_csv ('vcf23_1.csv')
 

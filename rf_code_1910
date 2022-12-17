@@ -32,7 +32,7 @@ stratify = y - точность менялась только в зависим�
 
 clf = RandomForestClassifier(oob_score = True, random_state = 42)
 parameters = {'n_estimators': [70, 100, 110, 120], 'max_depth': [2, 5, 7], 
-              'min_samples_leaf': [2, 3, 5], 'max_features': [8, 13, 20, 30, 40, 50, 75, 100]}
+              'min_samples_leaf': [2, 3, 5], 'max_features': [8, 13, 20, 30, 40, 50, 75, 100, 'sqrt']}
 grid_search_cv_clf = GridSearchCV (clf, parameters, cv = 5)
 grid_search_cv_clf.fit(X_train, y_train)
 grid_search_cv_clf.best_params_

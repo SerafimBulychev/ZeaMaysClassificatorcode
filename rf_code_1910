@@ -9,8 +9,9 @@ from sklearn import metrics
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, make_scorer
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.svm import SVC
-#pip install dtreeviz
-from dtreeviz.trees import dtreeviz
+#pip install graphviz
+import graphviz
+from sklearn.tree import export_graphviz
 
 corn_data = pd.read_csv ('vcf23_1.csv')
 
@@ -185,10 +186,4 @@ plt.legend()
 
 #visualize decision tree
 
-vizclf = dtreeviz(rf.estimators_[110], X, y,
-               target_name="heterotic_group",
-               feature_names=corn_data.feature_names,
-               class_names=list(heterotic_group.names),
-               title="100th decision tree -ZeaMaysClassifier")
 
-vizclf.save("decision_tree_zea_mays_classifier.svg")

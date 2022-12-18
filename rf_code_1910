@@ -192,3 +192,7 @@ vizclf = export_graphviz(rf.estimators_[110], X, y,
                class_names=list(heterotic_group.names),
                filled=True, impurity=True, 
                            rounded=True)
+                           
+graph = graphviz.Source(dot_data, format='png')
+graph
+graph.render('figure_name')

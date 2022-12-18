@@ -186,4 +186,9 @@ plt.legend()
 
 #visualize decision tree
 
-
+vizclf = export_graphviz(rf.estimators_[110], X, y,
+               target_name="heterotic_group",
+               feature_names=corn_data.feature_names,
+               class_names=list(heterotic_group.names),
+               filled=True, impurity=True, 
+                           rounded=True)

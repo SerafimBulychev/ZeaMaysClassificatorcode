@@ -39,13 +39,8 @@ grid_search_cv_clf.fit(X_train, y_train)
 grid_search_cv_clf.best_params_
 
 '''
-варианты введения oob_score
+варианты введения oob_score - напрямую gridsearch через make_scorer провести не удалось, но можно попробовать цикл
 '''
-oob_scorer = make_scorer(clf.oob_score_)
-grid_search_cv_clf_oob = GridSearchCV (clf, parameters, scoring = oob_scorer) 
-
-
-
 
 best_clf = grid_search_cv_clf.best_estimator_ 
 best_clf 

@@ -44,7 +44,7 @@ grid_search_cv_clf.best_params_
 scores_data = pd.DataFrame
 max_depth_values = range(1, 10) #в качестве варьируемого может быть выбран иной параметр
 for max_depth in max_depth_values:
-    clf = RandomForestClassifier(criterion='gini', max_depth=max_depth, n_estimators = 110, min_samples_leaf = 2, oob_score = True)
+    clf = RandomForestClassifier(criterion='gini', max_depth=max_depth, n_estimators = 110, min_samples_split= 5, min_samples_leaf = 2, oob_score = True)
     clf.fit(X_train, y_train)
     train_score = clf.score(X_train, y_train)
     test_score = clf.score(X_test, y_test)

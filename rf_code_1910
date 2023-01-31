@@ -15,7 +15,7 @@ from sklearn.tree import export_graphviz
 
 corn_data = pd.read_csv ('vcf23_1.csv')
 
-categories = {"A": 1, "B": 2, "AB": 3, "A_TESTER": 4, "B_TESTER": 5}
+categories = {"A": 1, "B": 2, "AB": 0, "A_TESTER": 3, "B_TESTER": 4}
 corn_data['Class']= corn_data['Class'].map(categories)
 
 
@@ -32,7 +32,7 @@ stratify = y - точность менялась только в зависим�
 """
 
 clf = RandomForestClassifier(oob_score = True)
-parameters = {'n_estimators': [70, 90, 100, 110], 'max_depth': [2, 5, 7], 
+parameters = {'n_estimators': [70, 90, 100, 110], 'max_depth': [5, 7], 
               'min_samples_leaf': [2, 3, 5], 'max_features': [8, 13, 20, 30, 40, 50, 75, 100, 'sqrt']}
 grid_search_cv_clf = GridSearchCV (clf, parameters, cv = 5)
 grid_search_cv_clf.fit(X_train, y_train)
@@ -105,7 +105,7 @@ max_features = [8, 13, 20, 30, 40, 50, 75, 100, 'log2']
 n_estimators = range(80, 150)
 max_depth = [3, 5, 7]
 min_samples_split = range(2, 5)
-min_samples_leaf = range(2, 4)
+min_samples_leaf = range(2, 5)
    
 random_grid = {'n_estimators': n_estimators,
                'max_depth': max_depth,

@@ -32,8 +32,9 @@ stratify = y - точность менялась только в зависим�
 """
 
 clf = RandomForestClassifier(oob_score = True)
-parameters = {'n_estimators': [70, 90, 100, 110], 'max_depth': [5, 7], 
-              'min_samples_leaf': [2, 3, 5], 'max_features': [8, 13, 20, 30, 40, 50, 75, 100, 'sqrt']}
+parameters = {'n_estimators': [70, 90, 100, 110], 'max_depth': [3, 5, 7], 
+              'min_samples_leaf': [2, 3, 5], 'max_features': [8, 13, 20, 30, 40, 50, 75, 100, 'sqrt']
+              'min_samples_split': [2, 3, 5]}
 grid_search_cv_clf = GridSearchCV (clf, parameters, cv = 5)
 grid_search_cv_clf.fit(X_train, y_train)
 grid_search_cv_clf.best_params_
@@ -101,7 +102,7 @@ rf_classifier = RandomForestClassifier(
                       oob_score=True,
                       random_state=42)
                       
-max_features = [8, 13, 20, 30, 40, 50, 75, 100, 'log2']
+max_features = [8, 13, 20, 30, 40, 50, 75, 100, 'sqrt', 'log2']
 n_estimators = range(80, 150)
 max_depth = [3, 5, 7]
 min_samples_split = range(2, 5)
